@@ -3,8 +3,6 @@ library(ggplot2)
 theme_set(theme_bw())
 
 
-
-
 shinyServer(function(input, output) {
   newdata <- reactive({
     #transform the data in a reactive conductor which can be used for multiple outputs without re-evaluating
@@ -48,9 +46,6 @@ shinyServer(function(input, output) {
     
     name <- paste0(input$filename, "_rawdata_", input$student_name,
                    ".png")
-    #     if(input$savePlot) {
-    #       ggsave(name, p, type="cairo-png")
-    #     }
   })
   output$lm_plot <- renderPlot({
     df <- newdata() 
@@ -68,9 +63,6 @@ shinyServer(function(input, output) {
     
     name <- paste0(input$title, "_model_", input$student_name,
                    ".png")
-    #     if(input$savePlot) {
-    #       ggsave(name, p, type="cairo-png")
-    #     }
   })
   output$line_eqn <- renderPrint({
     df <- newdata() 
@@ -147,77 +139,3 @@ shinyServer(function(input, output) {
       dev.off()
     })
 })
-
-
-
-
-
-# # We tweak the "am" field to have nicer factor labels. Since this doesn't
-# # rely on any user inputs we can do this once at startup and then use the
-# # value throughout the lifetime of the application
-# mpgData <- mtcars
-# mpgData$am <- factor(mpgData$am, labels = c("Automatic", "Manual"))
-# 
-# # Define server logic required to plot various variables against mpg
-# shinyServer(function(input, output) {
-#   
-#   # Compute the forumla text in a reactive expression since it is 
-#   # shared by the output$caption and output$mpgPlot expressions
-#   formulaText <- reactive({
-#     paste("mpg ~", input$variable)
-#   })
-#   
-#   # Return the formula text for printing as a caption
-#   output$caption <- renderText({
-#     formulaText()
-#   })
-#   
-#   # Generate a plot of the requested variable against mpg and only 
-#   # include outliers if requested
-#   output$mpgPlot <- renderPlot({
-#    # boxplot(as.formula(formulaText()), 
-#     #        data = mpgData,
-#     #        outline = input$outliers)
-#     qplot(input$variable, mpgData$mpg)
-#   })
-# })
-
-
-# # server.R
-# 
-# shinyServer(
-#   function(input, output) {
-#     # table of outputs
-#     output$table.output <- renderTable(
-# { res <- matrix(apply(input$data,1,prod))
-#   res <- do.call(cbind, list(input$data, res))
-#   colnames(res) <- c("Input 1","Input 2","Product")
-#   res
-# }
-# , include.rownames = FALSE
-# , include.colnames = TRUE
-# , align = "cccc"
-# , digits = 2
-# , sanitize.text.function = function(x) x      
-#     )  
-#     
-#     ### Output xy-scatterplot
-# #    output$xyPlot <- renderPlot({
-# #       plot(seq(1, maxYears, 1), rep(0, maxYears), type = "n",
-# #            lwd = 2, xlim = c(0, maxYears), ylim = c(0, maxHits),
-# #            xlab = "Year", ylab = "Hits")
-# #       segments(x0 = -100, x1 = 1000, y0 = 3000, y1 = 3000, lty = 2, lwd = 2,
-# #                col = "black")
-# #       for(i in 1:length(mHitsCumSum)){
-# #         lines(seq(1, length(mHitsCumSum[[i]]), 1), mHitsCumSum[[i]], lwd = 2,
-# #               col = "grey70")
-# #       }
-# #       lines(seq(1, length(currentMemberHits()), 1), currentMemberHits(), lwd = 2, 
-# #             col = "magenta")
-# #       lines(seq(1, length(currentPlayerHits()), 1), currentPlayerHits(), lwd = 2, 
-# #             col = "blue")
-# #      plot(res[,1], res[,2])
-# #      })    
-#     
-#   }
-# )
